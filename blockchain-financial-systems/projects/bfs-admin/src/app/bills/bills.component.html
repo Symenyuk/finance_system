@@ -1,0 +1,111 @@
+<mat-card class="transparent-card">
+  <mat-card-header>
+    <mat-card-title>Bills</mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <ng-container *ngIf="!tabs.length">
+      <div class="filters">
+        <button mat-flat-button color="accent" (click)="prevInterval()" [disabled]="!showPrev">
+          Previous period
+        </button>
+        <mat-form-field>
+          <mat-label>Hospital</mat-label>
+          <mat-select [(ngModel)]="filter.fields['hospital']" (ngModelChange)="onCounterpartyChange()">
+            <mat-option *ngFor="let option of options.hospital" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Insurance</mat-label>
+          <mat-select [(ngModel)]="filter.fields['insurance']" (selectionChange)="onCounterpartyChange()">
+            <mat-option *ngFor="let option of options.insurance" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="accent" (click)="nextInterval()" [disabled]="!showNext">
+          Next period
+        </button>
+        <mat-form-field>
+          <mat-label>Bill status</mat-label>
+          <mat-select [(ngModel)]="filter.fields['status']" (selectionChange)="loadBills()">
+            <mat-option *ngFor="let option of options.status" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <app-bills-table [title]="data.title" [list]="data.list" [total]="data.total" [columns]="dataColumns" [loaded]="loaded" (update)="loadBills()"></app-bills-table>
+      <div class="content-footer">
+        <ng-container *ngIf="'export_bills' | checkPermission">
+          <button mat-flat-button color="accent" (click)="exportBills()">Export bills</button>
+        </ng-container>
+        <mat-paginator [length]="data.total" [pageSize]="filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="pageIndex" (page)="handlePage($event)"></mat-paginator>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="tabs.length">
+      <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChanged($event);" [color]="'accent'">
+        <mat-tab *ngIf="attentionTab">
+          <ng-template mat-tab-label>
+            <span [matBadge]="notificationsBadge.value" [matBadgeOverlap]="false" [matBadgeColor]="notificationsBadge.color">Attention</span>
+          </ng-template>
+          <ng-template matTabContent>
+            <app-notifications></app-notifications>
+          </ng-template>
+        </mat-tab>
+        <mat-tab [label]="tab.label" *ngFor="let tab of tabs; let last = last">
+          <ng-template matTabContent>
+            <div class="filters">
+              <button mat-flat-button color="accent" (click)="prevInterval()" [disabled]="!showPrev">
+                Previous period
+              </button>
+              <mat-form-field>
+                <mat-label>Hospital</mat-label>
+                <mat-select [(ngModel)]="tab.filter.fields['hospital']" (ngModelChange)="onCounterpartyChange()">
+                  <mat-option *ngFor="let option of options.hospital" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Insurance</mat-label>
+                <mat-select [(ngModel)]="tab.filter.fields['insurance']" (selectionChange)="onCounterpartyChange()">
+                  <mat-option *ngFor="let option of options.insurance" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-flat-button color="accent" (click)="nextInterval()" [disabled]="!showNext">
+                Next period
+              </button>
+              <mat-form-field>
+                <mat-label>Bill status</mat-label>
+                <mat-select [(ngModel)]="tab.filter.fields['status']" (selectionChange)="loadBills()">
+                  <mat-option *ngFor="let option of options.status" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="filters" *ngIf="!last && ('change_bill_status' | checkPermission) && canChangeBillStatus[tab.status]">
+              <ng-container *ngFor="let status of billStatuses | keyvalue">
+                <ng-container *ngIf="canChangeBillStatus[tab.status].includes(+status.key)">
+                  <button mat-flat-button color="accent" (click)="changeStatus(+status.key, status.value.button)" [disabled]="!selectedBills.length" [style.margin-left]="'10px'">{{ status.value.button + ' all selected' }}</button>
+                </ng-container>
+              </ng-container>
+            </div>
+            <app-bills-table [title]="data.title" [list]="data.list" [total]="data.total" [columns]="tab.columns" [loaded]="loaded" (update)="loadBills()" (selected)="selectedBills = $event"></app-bills-table>
+            <div class="content-footer">
+              <ng-container *ngIf="'export_bills' | checkPermission">
+                <button mat-flat-button color="accent" (click)="exportBills()">Export bills</button>
+              </ng-container>
+              <mat-paginator [length]="data.total" [pageSize]="tab.filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="tab.pageIndex" (page)="handlePage($event)"></mat-paginator>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

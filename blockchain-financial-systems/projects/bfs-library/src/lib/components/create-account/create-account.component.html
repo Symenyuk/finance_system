@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="userForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [formControlName]="'name'" placeholder="Enter user name">
+      <mat-error *ngIf="form.name.errors">
+        <span *ngIf="form.name.errors['required']">
+          This field is required
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input matInput type="text" [formControlName]="'login'" placeholder="Enter user login">
+        <mat-error *ngIf="form.login.errors">
+        <span *ngIf="form.login.errors['required']">
+          This field is required
+        </span>
+          <span *ngIf="form.login.errors['minlength']">
+          Login must be at least {{ form.login.errors['minlength']['requiredLength'] }} characters long
+        </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput type="text" [formControlName]="'password'" placeholder="Enter user password">
+        <mat-error *ngIf="form.password.errors">
+        <span *ngIf="form.password.errors['required']">
+          This field is required
+        </span>
+          <span *ngIf="form.password.errors['minlength']">
+          Password must be at least {{ form.password.errors['minlength']['requiredLength'] }} characters long
+        </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [formControlName]="'email'" placeholder="Enter user email">
+      <mat-error *ngIf="form.email.errors">
+        <span *ngIf="form.email.errors['required']">
+          This field is required
+        </span>
+        <span *ngIf="form.email.errors['email']">
+          Email must be a valid email address
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Mobile</mat-label>
+        <input matInput type="text" [formControlName]="'mobile'" placeholder="Enter user mobile number">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select [formControlName]="'role'">
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{ role }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.role.errors">
+        <span *ngIf="form.role.errors['required']">
+          This field is required
+        </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="''">Cancel</button>
+  <button mat-flat-button color="accent" (click)="create()" [disabled]="userForm.invalid">Create</button>
+</div>

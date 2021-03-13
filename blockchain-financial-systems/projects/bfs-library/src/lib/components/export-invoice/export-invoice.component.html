@@ -1,0 +1,15 @@
+<button mat-icon-button [mat-dialog-close] class="close-button"><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Export invoice</h1>
+<div mat-dialog-content style="display: flex; align-items: center; justify-content: center; height: 250px">
+  <p *ngIf="finished && !postErrors">You can open or download your file by the links below</p>
+  <mat-error class="form-error" *ngIf="finished && postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+  </mat-error>
+  <mat-progress-spinner [color]="'accent'" mode="indeterminate" *ngIf="!finished"></mat-progress-spinner>
+</div>
+<div mat-dialog-actions *ngIf="finished">
+  <button mat-flat-button [color]="'accent'" (click)="open()" [disabled]="postErrors">Open in new tab</button>
+  <button mat-flat-button [color]="'accent'" (click)="download()" [disabled]="postErrors">Download</button>
+</div>

@@ -1,0 +1,38 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Log in form</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="loginForm" (ngSubmit)="logIn()">
+      <mat-form-field>
+        <input matInput [formControlName]="'username'" type="text" placeholder="Username">
+        <mat-error *ngIf="form.username.errors">
+          <span *ngIf="form.username.errors['required']">
+            Username is <strong>required</strong>
+          </span>
+          <span *ngIf="form.username.errors['minlength']">
+            Username should be at least {{ form.username.errors['minlength']['requiredLength'] }} characters long
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [formControlName]="'password'" type="password" placeholder="Password">
+        <mat-error *ngIf="form.password.errors">
+          <span *ngIf="form.password.errors['required']">
+            Password is <strong>required</strong>
+          </span>
+          <span *ngIf="form.password.errors['minlength']">
+            Password should be at least {{ form.password.errors['minlength']['requiredLength'] }} characters long
+          </span>
+        </mat-error>
+      </mat-form-field>
+      <div [style.text-align]="'right'">
+        <button mat-button type="button" (click)="forgotPassword()">forgot password?</button>
+      </div>
+      <mat-error class="form-error" *ngIf="postError">
+        {{ postError }}
+      </mat-error>
+      <button mat-flat-button color="accent" type="submit" [disabled]="loginForm.invalid">Log in</button>
+    </form>
+  </mat-card-content>
+</mat-card>

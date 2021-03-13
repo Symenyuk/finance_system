@@ -1,0 +1,19 @@
+table {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+
+  ::ng-deep thead, tbody, tfoot, tr {
+    background: transparent !important;
+  }
+
+  td.mat-footer-cell {
+    text-align: center;
+    height: 300px;
+  }
+
+  mat-progress-spinner {
+    margin: 0 auto;
+  }
+}

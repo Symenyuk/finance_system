@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>{{ editing ? 'Edit' : 'Create' }} service</h1>
+<div mat-dialog-content>
+  <form [formGroup]="serviceForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [formControlName]="'name'" placeholder="Enter service name">
+      <mat-error *ngIf="form.name.errors">
+        <ng-container *ngIf="form.name.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" [disabled]="serviceForm.invalid" (click)="create()" *ngIf="!editing">Create</button>
+  <button mat-flat-button color="accent" [disabled]="serviceForm.invalid" (click)="edit()" *ngIf="editing">Edit</button>
+</div>

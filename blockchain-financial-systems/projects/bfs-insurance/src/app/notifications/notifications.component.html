@@ -1,0 +1,2 @@
+<app-bills-table [list]="data.list" [total]="data.total" [columns]="dataColumns" [loaded]="loaded" (update)="loadHistory()"></app-bills-table>
+<mat-paginator [length]="data.total" [pageSize]="filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="pageIndex" (page)="handlePage($event)"></mat-paginator>

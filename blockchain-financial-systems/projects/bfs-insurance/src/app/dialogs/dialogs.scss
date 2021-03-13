@@ -1,0 +1,60 @@
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+
+  mat-form-field {
+    margin: 10px 0;
+  }
+
+  mat-slide-toggle {
+    align-self: flex-start;
+  }
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid rgba(0, 0, 0, 0.42);
+    margin: 20px 0;
+    padding: 15px 15px 0;
+
+    .fieldset-inner {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .fields-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 -10px;
+
+    mat-form-field {
+      flex: 1;
+      margin: 10px;
+
+      ::ng-deep .mat-form-field-infix {
+        width: auto;
+      }
+    }
+  }
+}
+
+.mat-list-base {
+
+  .agreement-details {
+    font-weight: bold;
+  }
+}
+
+.mat-dialog-actions {
+  justify-content: space-around;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}

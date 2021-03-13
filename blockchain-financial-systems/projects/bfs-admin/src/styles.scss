@@ -1,0 +1,109 @@
+/* You can add global styles to this file, and also import other style files */
+@import './variables';
+@include angular-material-theme($bfs-admin-theme);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(25, 56, 92, 0.75);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-card {
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.mat-card.transparent-card {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.15);
+
+  .mat-divider-horizontal {
+    position: relative !important;
+    margin: 16px 0;
+  }
+
+  mat-paginator {
+    background: transparent;
+  }
+}
+
+.mat-table.transparent-table {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+
+  thead, tbody, tfoot, tr {
+    background: transparent !important;
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .icon-cell {
+    width: 40px;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  td.mat-footer-cell {
+    text-align: center;
+    height: 300px;
+  }
+
+  mat-progress-spinner {
+    margin: 0 auto;
+  }
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+  padding: 15px 0;
+
+  mat-form-field {
+    margin: 0 10px;
+  }
+}
+
+mat-error.form-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+}
+
+.success-snack {
+  background-color: rgba(76, 175, 80, 0.5);
+}
+
+.error-snack {
+  background-color: rgba(211, 47, 47, 0.5);
+}
+
+.relative {
+  position: relative !important;
+}

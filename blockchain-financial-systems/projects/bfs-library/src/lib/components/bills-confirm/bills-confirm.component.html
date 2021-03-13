@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{ data.title }} all bills</h1>
+<div mat-dialog-content>
+  <p>Send a request to update {{ count }} bills</p>
+  <div class="progress">
+    <div class="progress-text">
+      {{ finishedCount }} / {{ count }}
+    </div>
+    <mat-progress-spinner [color]="'accent'" [mode]="'indeterminate'" *ngIf="processing"></mat-progress-spinner>
+    <mat-progress-spinner [color]="'accent'" [mode]="'determinate'" [value]="100" *ngIf="!processing"></mat-progress-spinner>
+  </div>
+  <mat-progress-bar class="example-margin" [color]="'accent'" [mode]="'determinate'" [value]="(finishedCount / count) * 100"></mat-progress-bar>
+  <mat-error *ngIf="errors">
+    <span *ngFor="let error of errors">
+      {{ error.message }}
+    </span>
+  </mat-error>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false" [disabled]="processing" *ngIf="!finished">Cancel</button>
+  <button mat-flat-button color="accent" (click)="update()" [disabled]="processing" *ngIf="!finished">{{ data.title }} all</button>
+  <button mat-flat-button color="accent" [mat-dialog-close]="true" *ngIf="finished">Close</button>
+</div>

@@ -1,0 +1,53 @@
+{
+  "server_port": "3001",
+  "jwt": {
+    "access_token_key": "access_token_key123",
+    "access_token_life": "120000",
+    "refresh_token_key": "refresh_token_key777",
+    "refresh_token_life": "3600000"
+  },
+  "super_admin": {
+    "login": "adminGGG",
+    "password": "Mpassword789"
+  },
+  "mail": {
+    "host": "box.bfs-network.name",
+    "from": "Blockchain Financial Systems <admin@bfs-network.name>",
+    "user": "admin@bfs-network.name",
+    "password": "bfs-network!"
+  },
+  "network": {
+    "use_couchdb": false,
+    "create_history_log": true,
+    "couchdb_address": "http://localhost:5990",
+    "channel": "allchannel",
+    "contract": "bills",
+    "admin": {
+      "identity": "admin_user",
+      "wallet": "./identity/user/admin_user/wallet",
+      "connection": "./gateway/connection.yaml"
+    },
+    "hospital": {
+      "identity": "hospital_user",
+      "wallet": "./identity/user/hospital_user/wallet",
+      "connection": "./gateway/connection.yaml"
+    },
+    "insurance": {
+      "identity": "insurance_user",
+      "wallet": "./identity/user/insurance_user/wallet",
+      "connection": "./gateway/connection.yaml"
+    }
+  },
+  "notifications": {
+    "bills_days": "1",
+    "invoices_days": "1"
+  },
+  "bill": {
+    "countConcernStatus": 5,
+    "countPendingPaymentStatus": 5
+  },
+  "allowed_origins" : [
+    "http://127.0.0.1:7007", "http://127.0.0.1:8008", "http://127.0.0.1:9009",
+    "http://localhost:7007", "http://localhost:8008", "http://localhost:9009",
+    "https://admin.blockchainfinancial.systems", "https://hospital.blockchainfinancial.systems", "https://insurance.blockchainfinancial.systems"]
+}

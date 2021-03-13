@@ -1,0 +1,96 @@
+<mat-card class="transparent-card">
+  <mat-card-header>
+    <mat-card-title>Available agreements</mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <div class="filters">
+      <mat-form-field>
+        <mat-label>Date</mat-label>
+        <mat-select [(ngModel)]="filter.fields['date']" (selectionChange)="loadAgreements()">
+          <mat-option *ngFor="let option of options.date" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Hospital</mat-label>
+        <input matInput type="text" [(ngModel)]="filter.fields['hospital']" [ngModelOptions]="{standalone: true}" placeholder="Search by hospital name" (ngModelChange)="this.hospitalChanged.next($event)">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="data.list" class="transparent-table">
+
+      <ng-container matColumnDef="hospital">
+        <th mat-header-cell *matHeaderCellDef>Hospital</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.hospital.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="contact">
+        <th mat-header-cell *matHeaderCellDef>Hospital contact person</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.hospital.contact }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="manager">
+        <th mat-header-cell *matHeaderCellDef>Account manager</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.owner }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Start date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.createdAt | date }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="payment">
+        <th mat-header-cell *matHeaderCellDef>Payment interval</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.paymentInterval }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="penalty">
+        <th mat-header-cell *matHeaderCellDef>Delay penalty</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.delayPenalty }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>Discount rate</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.discountRate }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="info">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" class="icon-cell">
+          <button mat-icon-button [matTooltip]="'Agreement details'" [matTooltipPosition]="'above'" (click)="showDetails(element.id)">
+            <mat-icon>info</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="dataColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataColumns"></tr>
+
+      <ng-container matColumnDef="noRecord">
+        <td [attr.colspan]="dataColumns.length" mat-footer-cell *matFooterCellDef>
+          <mat-progress-spinner [color]="'accent'" mode="indeterminate" *ngIf="!loaded"></mat-progress-spinner>
+          <span *ngIf="loaded">No records found</span>
+        </td>
+      </ng-container>
+
+      <tr mat-footer-row *matFooterRowDef="['noRecord']" [hidden]="data.total > 0"></tr>
+
+    </table>
+    <mat-paginator [length]="data.total" [pageSize]="filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="pageIndex" (page)="handlePage($event)"></mat-paginator>
+  </mat-card-content>
+</mat-card>

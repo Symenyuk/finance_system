@@ -1,0 +1,40 @@
+:host {
+  width: 100%;
+  height: 100%;
+}
+
+mat-card {
+
+  .filters {
+    margin: 0;
+  }
+
+  table {
+
+    .status {
+      width: 30px;
+
+      div {
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+
+        &.inactive {
+          background-color: #d32f2f;
+        }
+
+        &.active {
+          background-color: #4caf50;
+        }
+
+        &.blocked {
+          background-color: #616161;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+}

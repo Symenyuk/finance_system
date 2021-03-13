@@ -1,0 +1,87 @@
+<button mat-icon-button [mat-dialog-close] class="close-button"><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Agreement details</h1>
+<div mat-dialog-content>
+  <mat-list *ngIf="agreement">
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <div mat-line>Manager</div>
+      <div mat-line class="agreement-details">{{ agreement.owner }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>business</mat-icon>
+      <div mat-line>Hospital</div>
+      <div mat-line class="agreement-details">{{ agreement.hospital.name }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <div mat-line>Hospital Contact Person</div>
+      <div mat-line class="agreement-details">{{ agreement.hospital.contact }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>payment</mat-icon>
+      <div mat-line>Insurance</div>
+      <div mat-line class="agreement-details">{{ agreement.insurance.name }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <div mat-line>Insurance Contact Person</div>
+      <div mat-line class="agreement-details">{{ agreement.insurance.contact }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>schedule</mat-icon>
+      <div mat-line>Transaction interval</div>
+      <div mat-line class="agreement-details">{{ agreement.transactionInterval === 7 ? 'Weekly' : 'Monthly' }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>schedule</mat-icon>
+      <div mat-line>Review interval</div>
+      <div mat-line class="agreement-details">{{ agreement.reviewInterval }} days</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>schedule</mat-icon>
+      <div mat-line>Payment interval</div>
+      <div mat-line class="agreement-details">{{ agreement.paymentInterval }} days</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>schedule</mat-icon>
+      <div mat-line>Charges interval</div>
+      <div mat-line class="agreement-details">{{ agreement.charges }} days</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>money</mat-icon>
+      <div mat-line>Charges per bill</div>
+      <div mat-line class="agreement-details">{{ agreement.transactionChargesPerBill }}</div>
+    </mat-list-item>
+    <ng-container *ngIf="agreement.delayPenalty">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>money</mat-icon>
+        <div mat-line>Delay penalty</div>
+        <div mat-line class="agreement-details">{{ agreement.delayPenalty }}</div>
+      </mat-list-item>
+    </ng-container>
+    <ng-container *ngIf="agreement.discountRate">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>money</mat-icon>
+        <div mat-line>Discount rate</div>
+        <div mat-line class="agreement-details">{{ agreement.discountRate }}</div>
+      </mat-list-item>
+    </ng-container>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>date_range</mat-icon>
+      <div mat-line>Created at</div>
+      <div mat-line class="agreement-details">{{ agreement.createdAt | date }}</div>
+    </mat-list-item>
+  </mat-list>
+</div>

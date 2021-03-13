@@ -1,0 +1,9 @@
+<mat-card class="transparent-card">
+  <mat-card-header>
+    <mat-card-title>Last bills</mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <app-bills-table [list]="bills.list" [total]="bills.total" [columns]="billsColumns" [loaded]="loaded" (update)="loadBills()"></app-bills-table>
+  </mat-card-content>
+</mat-card>

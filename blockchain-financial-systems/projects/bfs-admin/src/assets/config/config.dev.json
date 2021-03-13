@@ -1,0 +1,5 @@
+{
+  "apiUrl": "http://localhost:3001/",
+  "whence": "admin_app",
+  "pageSize": {"options": [10, 25, 50, 100], "default": 10, "dashboard": 40}
+}

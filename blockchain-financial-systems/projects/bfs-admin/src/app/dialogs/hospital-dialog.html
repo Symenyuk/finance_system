@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>{{ hospital ? 'Edit' : 'Create' }} hospital</h1>
+<div mat-dialog-content>
+  <form [formGroup]="hospitalForm">
+    <mat-form-field>
+      <mat-label>Hospital name</mat-label>
+      <input matInput type="text" [formControlName]="'name'" placeholder="Enter hospital name">
+      <mat-error *ngIf="form.name.errors">
+        <ng-container *ngIf="form.name.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Unique name</mat-label>
+      <input matInput type="text" [formControlName]="'name_unique'" placeholder="Enter unique name">
+      <mat-error *ngIf="form.name_unique.errors">
+        <ng-container *ngIf="form.name_unique.errors['required']">
+          This field is required
+        </ng-container>
+        <ng-container *ngIf="form.name_unique.errors['pattern']">
+          Use only letters for this field
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <fieldset>
+      <legend>Hospital contact person</legend>
+      <mat-form-field>
+        <mat-label>Contact person name</mat-label>
+        <input matInput type="text" [formControlName]="'contact_person_name'" placeholder="Enter contact person name">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Contact person email</mat-label>
+        <input matInput type="email" [formControlName]="'contact_person_email'" placeholder="Enter contact person email">
+        <mat-error *ngIf="form.contact_person_email.errors">
+          <ng-container *ngIf="form.contact_person_email.errors['email']">
+            Email must be a valid email address
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Contact person phone</mat-label>
+        <input matInput type="text" [formControlName]="'contact_person_phone'" placeholder="Enter contact person phone">
+      </mat-form-field>
+    </fieldset>
+    <mat-form-field>
+      <mat-label>ZIP Code</mat-label>
+      <input matInput type="text" [formControlName]="'zip_code'" placeholder="Enter ZIP Code">
+      <mat-error *ngIf="form.zip_code.errors">
+        <ng-container *ngIf="form.zip_code.errors['required']">
+          This field is required
+        </ng-container>
+        <ng-container *ngIf="form.zip_code.errors['pattern']">
+          The value must be an integer
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" (click)="create()" [disabled]="hospitalForm.invalid" *ngIf="!hospital">Create</button>
+  <button mat-flat-button color="accent" (click)="update()" [disabled]="hospitalForm.invalid" *ngIf="hospital">Update</button>
+</div>

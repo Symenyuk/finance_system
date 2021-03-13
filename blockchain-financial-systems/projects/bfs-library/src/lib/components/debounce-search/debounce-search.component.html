@@ -1,0 +1,4 @@
+<mat-form-field>
+  <mat-label>{{ label }}</mat-label>
+  <input matInput type="text" [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [placeholder]="placeholder" (ngModelChange)="valueChanged.next($event)">
+</mat-form-field>

@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Assign admin for {{ name }}</h1>
+<div mat-dialog-content>
+  <form>
+    <mat-form-field>
+      <mat-label>Select account</mat-label>
+      <mat-select [(ngModel)]="account" [ngModelOptions]="{standalone: true}" [disabled]="!accounts.length">
+        <mat-option *ngFor="let account of accounts" [value]="account.login">
+          {{ account.login }}
+        </mat-option>
+      </mat-select>
+      <mat-hint>{{ hint }}</mat-hint>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="''">Cancel</button>
+  <button mat-flat-button color="accent" (click)="assignAccount()" [disabled]="!account">Assign</button>
+  <button mat-flat-button color="accent" (click)="createAccount()">Create new account</button>
+</div>

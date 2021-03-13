@@ -1,0 +1,36 @@
+mat-list-item {
+  padding: 15px 0 !important;
+  height: auto !important;
+
+  .mat-line {
+    white-space: normal !important;
+  }
+}
+
+.mat-dialog-actions {
+  flex-direction: column;
+
+  .bill-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #111;
+    border-radius: 10px;
+    font-size: larger;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 15px;
+  }
+
+  .bill-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    width: 100%;
+
+    button {
+      margin: 0 auto;
+    }
+  }
+}

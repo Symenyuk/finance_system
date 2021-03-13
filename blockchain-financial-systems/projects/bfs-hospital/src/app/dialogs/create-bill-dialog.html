@@ -1,0 +1,265 @@
+<h1 mat-dialog-title>Create a bill</h1>
+<div mat-dialog-content>
+  <form [formGroup]="setUpBillForm">
+    <mat-form-field>
+      <mat-label>Agreement with</mat-label>
+      <mat-select [formControlName]="'insurance'">
+        <mat-option *ngFor="let insurance of options.insurance" [value]="insurance.value">
+          {{ insurance.label }}
+        </mat-option>
+      </mat-select>
+      <mat-hint *ngIf="!options.insurance.length">There are no agreements yet</mat-hint>
+      <mat-error *ngIf="form.insurance.errors">
+        <ng-container *ngIf="form.insurance.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>National Security Number</mat-label>
+      <input matInput type="text" [formControlName]="'national_security_number'" placeholder="Enter national security number">
+      <mat-error *ngIf="form.national_security_number.errors">
+        <ng-container *ngIf="form.national_security_number.errors['required']">
+          This field is required
+        </ng-container>
+        <ng-container *ngIf="form.national_security_number.errors['pattern']">
+          National Security Number must contain only digits
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Patient name</mat-label>
+        <input matInput type="text" [formControlName]="'patient_name'" placeholder="Enter patient name">
+        <mat-error *ngIf="form.patient_name.errors">
+          <ng-container *ngIf="form.patient_name.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.patient_name.errors['pattern']">
+            Use only letters and whitespace for this field
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Patient mobile</mat-label>
+        <input matInput type="text" [formControlName]="'patient_mobile'" placeholder="Enter patient mobile">
+        <mat-error *ngIf="form.patient_mobile.errors">
+          <ng-container *ngIf="form.patient_mobile.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.patient_mobile.errors['pattern']">
+            Mobile must contain only digits
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Patient age</mat-label>
+        <input matInput type="number" [formControlName]="'patient_age'" placeholder="Enter patient age">
+        <mat-error *ngIf="form.patient_age.errors">
+          <ng-container *ngIf="form.patient_age.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.patient_age.errors['min']">
+            Age can't be negative
+          </ng-container>
+          <ng-container *ngIf="form.patient_age.errors['pattern']">
+            Age must be positive integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Policy number</mat-label>
+        <input matInput type="text" [formControlName]="'policy_number'" placeholder="Enter policy number">
+        <mat-error *ngIf="form.policy_number.errors">
+          <ng-container *ngIf="form.policy_number.errors['required']">
+            This field is required
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Policy type</mat-label>
+        <input matInput type="text" [formControlName]="'policy_type'" placeholder="Enter policy type">
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Approval number</mat-label>
+        <input matInput type="text" [formControlName]="'approval_number'" placeholder="Enter approval number">
+        <mat-error *ngIf="form.approval_number.errors">
+          <ng-container *ngIf="form.approval_number.errors['min'] && !form.approval_number.errors['pattern']">
+            The value can't be negative or zero
+          </ng-container>
+          <ng-container *ngIf="form.approval_number.errors['pattern']">
+            The value must be an integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Insurance approval</mat-label>
+        <mat-select [formControlName]="'insurance_approval'">
+          <mat-option [value]="true">Yes</mat-option>
+          <mat-option [value]="false">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Approval date</mat-label>
+        <input matInput type="date" [formControlName]="'approval_date'">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Approval time</mat-label>
+        <input matInput type="time" [formControlName]="'approval_time'">
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Branch</mat-label>
+        <mat-select [formControlName]="'branch'" (selectionChange)="changeBranch()">
+          <mat-option *ngFor="let branch of options.branch" [value]="branch.value">
+            {{ branch.label }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!options.branch.length">There are no branches yet</mat-hint>
+        <mat-error *ngIf="form.branch.errors">
+          <ng-container *ngIf="form.branch.errors['required']">
+            This field is required
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Department</mat-label>
+        <mat-select [formControlName]="'department'">
+          <mat-option *ngFor="let department of options.department" [value]="department.value">
+            {{ department.label }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!options.department.length">There are no departments for selected branch yet</mat-hint>
+        <mat-error *ngIf="form.department.errors">
+          <ng-container *ngIf="form.department.errors['required']">
+            This field is required
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Doctor name</mat-label>
+        <input matInput type="text" [formControlName]="'doctor_name'" placeholder="Enter doctor name">
+        <mat-error *ngIf="form.doctor_name.errors">
+          <ng-container *ngIf="form.doctor_name.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.doctor_name.errors['pattern']">
+            Use only letters and whitespace for this field
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Service</mat-label>
+        <mat-select [formControlName]="'service_name'">
+          <mat-option *ngFor="let service of options.service" [value]="service.value">
+            {{ service.label }}
+          </mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!options.service.length">There are no services yet</mat-hint>
+        <mat-error *ngIf="form.service_name.errors">
+          <ng-container *ngIf="form.service_name.errors['required']">
+            This field is required
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Service description</mat-label>
+      <textarea matInput [formControlName]="'service_description'" placeholder="Enter service description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Related bill</mat-label>
+      <mat-select [formControlName]="'related_bill'" [panelClass]="'related-bill'">
+        <mat-select-trigger>{{ form.related_bill.value }}</mat-select-trigger>
+        <mat-option *ngFor="let bill of options.bill" [value]="bill.value">
+          <span class="key"><b>{{ bill.label }}</b></span>
+          <br>
+          <span class="info">
+            <b>Doctor:</b> {{ bill.original.doctor_name }}
+            <b>Service:</b> {{ bill.original.service_name }}
+            <b>Created at:</b> {{ bill.original.created_at | date : 'medium' }}
+          </span>
+        </mat-option>
+      </mat-select>
+      <mat-hint *ngIf="!options.bill.length">There are no bills for current patient</mat-hint>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Cost</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'cost'" placeholder="Enter cost">
+        <mat-error *ngIf="form.cost.errors">
+          <ng-container *ngIf="form.cost.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.cost.errors['min']">
+            Cost can't be negative value or zero
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Discount</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'discount'" placeholder="Enter discount">
+        <mat-error *ngIf="form.discount.errors">
+          <ng-container *ngIf="form.discount.errors['min']">
+            Discount can't be negative value
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>VAT (Value Added Tax)</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'vat'" placeholder="Enter VAT (Value Added Tax)">
+        <mat-error *ngIf="form.vat.errors">
+          <ng-container *ngIf="form.vat.errors['min']">
+            VAT (Value Added Tax) can't be negative value
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Paid by patient</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'paid_by_patient'" placeholder="Enter paid by patient">
+        <mat-error *ngIf="form.paid_by_patient.errors">
+          <ng-container *ngIf="form.paid_by_patient.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.paid_by_patient.errors['min']">
+            The value can't be negative or zero
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Remain to pay by insurance</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'remain_to_pay_by_insurance'" placeholder="Enter remain to pay by insurance">
+        <mat-error *ngIf="form.remain_to_pay_by_insurance.errors">
+          <ng-container *ngIf="form.remain_to_pay_by_insurance.errors['min']">
+            The value can't be negative or zero
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Additional info</mat-label>
+      <textarea matInput [formControlName]="'additional_info'" placeholder="Enter additional info"></textarea>
+    </mat-form-field>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" [disabled]="processing || setUpBillForm.invalid" (click)="setUpBill()">Create</button>
+</div>
+<mat-spinner *ngIf="processing" [color]="'accent'" mode="indeterminate"></mat-spinner>

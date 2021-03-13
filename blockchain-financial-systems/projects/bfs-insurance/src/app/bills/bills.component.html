@@ -1,0 +1,83 @@
+<mat-card class="transparent-card">
+  <mat-card-header>
+    <mat-card-title>Bills</mat-card-title>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <ng-container *ngIf="!tabs.length">
+      <div class="filters">
+        <button mat-flat-button color="accent" (click)="prevInterval()" [disabled]="!showPrev">
+          Previous period
+        </button>
+        <mat-form-field>
+          <mat-label>Hospital</mat-label>
+          <mat-select [(ngModel)]="filter.fields['hospital']" (selectionChange)="onHospitalChange()">
+            <mat-option *ngFor="let option of options.hospital" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-flat-button color="accent" (click)="nextInterval()" [disabled]="!showNext">
+          Next period
+        </button>
+        <lib-debounce-search [label]="'Policy number'" [(value)]="filter.fields['policy_number']" [placeholder]="'Search by policy number'"
+                             (valueChange)="loadHistory()" *ngIf="filter.hasField('policy_number')"></lib-debounce-search>
+        <lib-debounce-search [label]="'Patient name'" [(value)]="filter.fields['patient_name']" [placeholder]="'Search by patient name'"
+                             (valueChange)="loadHistory()" *ngIf="filter.hasField('patient_name')"></lib-debounce-search>
+        <lib-debounce-search [label]="'Patient mobile'" [(value)]="filter.fields['patient_mobile']" [placeholder]="'Search by patient mobile'"
+                             (valueChange)="loadHistory()" *ngIf="filter.hasField('patient_mobile')"></lib-debounce-search>
+      </div>
+      <app-bills-table [title]="data.title" [list]="data.list" [total]="data.total" [columns]="dataColumns" [loaded]="loaded" (update)="loadHistory()"></app-bills-table>
+      <mat-paginator [length]="data.total" [pageSize]="filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="pageIndex" (page)="handlePage($event)"></mat-paginator>
+    </ng-container>
+    <ng-container *ngIf="tabs.length">
+      <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChanged($event);" [color]="'accent'">
+        <mat-tab *ngIf="attentionTab">
+          <ng-template mat-tab-label>
+            <span [matBadge]="notificationsBadge.value" [matBadgeOverlap]="false" [matBadgeColor]="notificationsBadge.color">Attention</span>
+          </ng-template>
+          <ng-template matTabContent>
+            <app-notifications></app-notifications>
+          </ng-template>
+        </mat-tab>
+        <mat-tab [label]="tab.label" *ngFor="let tab of tabs; let last = last">
+          <ng-template matTabContent>
+            <div class="filters">
+              <button mat-flat-button color="accent" (click)="prevInterval()" [disabled]="!showPrev">
+                Previous period
+              </button>
+              <mat-form-field>
+                <mat-label>Hospital</mat-label>
+                <mat-select [(ngModel)]="tab.filter.fields['hospital']" (selectionChange)="onHospitalChange()">
+                  <mat-option *ngFor="let option of options.hospital" [value]="option.value">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-flat-button color="accent" (click)="nextInterval()" [disabled]="!showNext">
+                Next period
+              </button>
+              <lib-debounce-search [label]="'Policy number'" [(value)]="tab.filter.fields['policy_number']" [placeholder]="'Search by policy number'"
+                                   (valueChange)="loadHistory()" *ngIf="tab.filter.hasField('policy_number')"></lib-debounce-search>
+              <lib-debounce-search [label]="'Patient name'" [(value)]="tab.filter.fields['patient_name']" [placeholder]="'Search by patient name'"
+                                   (valueChange)="loadHistory()" *ngIf="tab.filter.hasField('patient_name')"></lib-debounce-search>
+              <lib-debounce-search [label]="'Patient mobile'" [(value)]="tab.filter.fields['patient_mobile']" [placeholder]="'Search by patient mobile'"
+                                   (valueChange)="loadHistory()" *ngIf="tab.filter.hasField('patient_mobile')"></lib-debounce-search>
+            </div>
+            <div class="filters" *ngIf="!last && ('change_bill_status' | checkPermission) && canChangeBillStatus[tab.status]">
+              <ng-container *ngFor="let status of billStatuses | keyvalue">
+                <ng-container *ngIf="canChangeBillStatus[tab.status].includes(+status.key) && ![22, 40, 42, 44, 50, 81].includes(+status.key)">
+                  <button mat-flat-button color="accent" (click)="changeStatus(+status.key, status.value.button)" [disabled]="!selectedBills.length" [style.margin-left]="'10px'">
+                    {{ status.value.button + ' all selected' }}
+                  </button>
+                </ng-container>
+              </ng-container>
+            </div>
+            <app-bills-table [title]="data.title" [list]="data.list" [total]="data.total" [columns]="tab.columns" [loaded]="loaded" (update)="loadHistory()" (selected)="selectedBills = $event"></app-bills-table>
+            <mat-paginator [length]="data.total" [pageSize]="tab.filter.fields['count']" [pageSizeOptions]="pageSize" [pageIndex]="tab.pageIndex" (page)="handlePage($event)"></mat-paginator>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

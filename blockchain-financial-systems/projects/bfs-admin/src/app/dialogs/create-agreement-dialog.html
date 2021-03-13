@@ -1,0 +1,141 @@
+<h1 mat-dialog-title>Create agreement</h1>
+<div mat-dialog-content>
+  <form [formGroup]="agreementForm">
+    <mat-form-field>
+      <mat-label>Hospital</mat-label>
+      <mat-select [formControlName]="'hospital'">
+        <mat-option *ngFor="let hospital of hospitals" [value]="hospital.value">
+          {{ hospital.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.hospital.errors">
+        <ng-container *ngIf="form.hospital.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Insurance</mat-label>
+      <mat-select [formControlName]="'insurance'">
+        <mat-option *ngFor="let insurance of insurances" [value]="insurance.value">
+          {{ insurance.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.insurance.errors">
+        <ng-container *ngIf="form.insurance.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Transaction interval</mat-label>
+      <mat-select [formControlName]="'transaction_interval'">
+        <mat-option [value]="7">Weekly</mat-option>
+        <mat-option [value]="30">Monthly</mat-option>
+      </mat-select>
+      <mat-icon matSuffix [matTooltip]="'The frequency of bills sent from the Hospital to the Insurance'" [matTooltipPosition]="'before'">info</mat-icon>
+      <mat-error *ngIf="form.transaction_interval.errors">
+        <ng-container *ngIf="form.transaction_interval.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Review interval</mat-label>
+        <input matInput type="number" step="1" [formControlName]="'review_interval'">
+        <mat-icon matSuffix [matTooltip]="'Number of days the insurance take to review the bills'" [matTooltipPosition]="'before'">info</mat-icon>
+        <mat-hint>Interval in days</mat-hint>
+        <mat-error *ngIf="form.review_interval.errors">
+          <ng-container *ngIf="form.review_interval.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.review_interval.errors['min'] && !form.review_interval.errors['pattern']">
+            The value can't be negative or zero
+          </ng-container>
+          <ng-container *ngIf="form.review_interval.errors['pattern']">
+            The value must be an integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Payment interval</mat-label>
+        <input matInput type="number" step="1" [formControlName]="'payment_interval'">
+        <mat-icon matSuffix [matTooltip]="'Number of days the insurance takes to pay the hospital'" [matTooltipPosition]="'before'">info</mat-icon>
+        <mat-hint>Interval in days</mat-hint>
+        <mat-error *ngIf="form.payment_interval.errors">
+          <ng-container *ngIf="form.payment_interval.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.payment_interval.errors['min'] && !form.payment_interval.errors['pattern']">
+            The value can't be negative or zero
+          </ng-container>
+          <ng-container *ngIf="form.payment_interval.errors['pattern']">
+            The value must be an integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Charges interval</mat-label>
+        <input matInput type="number" step="1" [formControlName]="'charges'">
+        <mat-icon matSuffix [matTooltip]="'Number of days hospital takes to pay BFS after invoice sent'" [matTooltipPosition]="'before'">info</mat-icon>
+        <mat-hint>Interval in days</mat-hint>
+        <mat-error *ngIf="form.charges.errors">
+          <ng-container *ngIf="form.charges.errors['required']">
+            This field is required
+          </ng-container>
+          <ng-container *ngIf="form.charges.errors['min'] && !form.charges.errors['pattern']">
+            The value can't be negative or zero
+          </ng-container>
+          <ng-container *ngIf="form.charges.errors['pattern']">
+            The value must be an integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Charges per bill</mat-label>
+      <input matInput type="number" step="0.01" [formControlName]="'transaction_charges_per_bill'" placeholder="Enter charges per bill">
+      <mat-error *ngIf="form.transaction_charges_per_bill.errors">
+        <ng-container *ngIf="form.transaction_charges_per_bill.errors['required']">
+          This field is required
+        </ng-container>
+        <ng-container *ngIf="form.transaction_charges_per_bill.errors['min']">
+          The value can't be negative or zero
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row" >
+      <mat-form-field>
+        <mat-label>Delay penalty</mat-label>
+        <input matInput type="number" step="0.01" [formControlName]="'delay_penalty'" placeholder="Enter delay penalty">
+        <mat-error *ngIf="form.delay_penalty.errors">
+          <ng-container *ngIf="form.delay_penalty.errors['min']">
+            The value can't be negative or zero
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="false">
+        <mat-label>Discount rate</mat-label>
+        <input matInput type="number" step="1" [formControlName]="'discount_rate'" placeholder="Enter discount rate">
+        <mat-error *ngIf="form.discount_rate.errors">
+          <ng-container *ngIf="form.discount_rate.errors['min'] && !form.discount_rate.errors['pattern']">
+            The value can't be negative or zero
+          </ng-container>
+          <ng-container *ngIf="form.discount_rate.errors['pattern']">
+            The value must be an integer
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" (click)="createAgreement()" [disabled]="agreementForm.invalid">Create</button>
+</div>

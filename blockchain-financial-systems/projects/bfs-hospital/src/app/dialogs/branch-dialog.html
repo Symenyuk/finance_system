@@ -1,0 +1,105 @@
+<h1 mat-dialog-title>{{ editing ? 'Edit' : 'Create' }} branch</h1>
+<div mat-dialog-content>
+  <form [formGroup]="branchForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [formControlName]="'name'" placeholder="Enter branch name">
+      <mat-error *ngIf="form.name.errors">
+        <ng-container *ngIf="form.name.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [formControlName]="'description'" placeholder="Enter branch description"></textarea>
+      <mat-error *ngIf="form.description.errors">
+        <ng-container *ngIf="form.description.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Region</mat-label>
+      <input matInput type="text" [formControlName]="'region'" [matAutocomplete]="region" placeholder="Enter region" (focus)="this.regionChanged.next($event.target.value)">
+      <mat-autocomplete #region="matAutocomplete">
+        <mat-option *ngFor="let option of options.region" [value]="option.value" (onSelectionChange)="submitRegion($event.source.value, option.original)">
+          {{ option.label }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="form.region.errors">
+        <ng-container *ngIf="form.region.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>City</mat-label>
+        <input matInput type="text" [formControlName]="'city'" [matAutocomplete]="city" placeholder="Enter city" (focus)="this.cityChanged.next($event.target.value)">
+        <mat-autocomplete #city="matAutocomplete">
+          <mat-option *ngFor="let option of options.city" [value]="option.value" (onSelectionChange)="submitCity($event.source.value, option.original)">
+            {{ option.label }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.city.errors">
+          <ng-container *ngIf="form.city.errors['required']">
+            This field is required
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>District</mat-label>
+        <input matInput type="text" [formControlName]="'district'" [matAutocomplete]="district" placeholder="Enter district" (focus)="this.districtChanged.next($event.target.value)">
+        <mat-autocomplete #district="matAutocomplete">
+          <mat-option *ngFor="let option of options.district" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-hint align="start">{{ districtHint }}</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Street</mat-label>
+        <input matInput type="text" [formControlName]="'street'" placeholder="Enter street">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Building</mat-label>
+        <input matInput type="text" [formControlName]="'building'" placeholder="Enter building">
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="email" [formControlName]="'email'" placeholder="Enter email">
+    </mat-form-field>
+    <div class="fields-row">
+      <mat-form-field>
+        <mat-label>Telephone</mat-label>
+        <input matInput type="text" [formControlName]="'tel'" placeholder="Enter telephone">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Mobile</mat-label>
+        <input matInput type="text" [formControlName]="'mobile'" placeholder="Enter mobile">
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Extension</mat-label>
+      <input matInput type="text" [formControlName]="'extension'" placeholder="Enter extension">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Manager</mat-label>
+      <input matInput type="text" [formControlName]="'manager_id'" placeholder="Enter manager">
+    </mat-form-field>
+    <mat-error class="form-error" *ngIf="postErrors">
+      <span *ngFor="let error of postErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" [disabled]="branchForm.invalid" (click)="create()" *ngIf="!editing">Create</button>
+  <button mat-flat-button color="accent" [disabled]="branchForm.invalid" (click)="edit()" *ngIf="editing">Edit</button>
+</div>

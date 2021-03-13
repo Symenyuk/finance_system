@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Activate account</h1>
+<div mat-dialog-content>
+  <form [formGroup]="activationForm">
+    <mat-form-field>
+      <mat-label>Activation code</mat-label>
+      <input matInput type="text" [formControlName]="'code'" placeholder="Enter activation code">
+      <mat-error *ngIf="form.code.errors">
+        <span *ngIf="form.code.errors['required']">
+          This field is required
+        </span>
+      </mat-error>
+    </mat-form-field>
+    <mat-error class="form-error" *ngIf="activationErrors">
+      <span *ngFor="let error of activationErrors">
+        {{ error.message }}
+      </span>
+    </mat-error>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" (click)="activate()" [disabled]="activationForm.invalid">Activate</button>
+</div>

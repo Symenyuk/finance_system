@@ -1,0 +1,6 @@
+<div *ngIf="('get_all_agreements' | checkPermission)" [style.margin-bottom]="'10px'">
+  <app-agreements></app-agreements>
+</div>
+<div *ngIf="('get_bills' | checkPermission)">
+  <app-bills></app-bills>
+</div>

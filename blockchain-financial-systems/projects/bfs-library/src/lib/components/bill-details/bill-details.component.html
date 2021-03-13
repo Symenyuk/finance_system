@@ -1,0 +1,129 @@
+<button mat-icon-button [mat-dialog-close] class="close-button"><mat-icon>close</mat-icon></button>
+<h1 mat-dialog-title>Bill details</h1>
+<div mat-dialog-content *ngIf="bill">
+  <mat-list>
+    <mat-list-item>
+      <mat-icon mat-list-icon>event_note</mat-icon>
+      <div mat-line>Bill key</div>
+      <div mat-line>{{ bill.key }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <div mat-line>Patient</div>
+      <div mat-line>{{ bill.patientName }} ({{ bill.patientAge }})</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>phone</mat-icon>
+      <div mat-line>Patient mobile</div>
+      <div mat-line>{{ bill.patientMobile }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>chrome_reader_mode</mat-icon>
+      <div mat-line>Policy</div>
+      <div mat-line>{{ bill.policyNumber }} ({{ bill.policyType }})</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>person</mat-icon>
+      <div mat-line>Doctor</div>
+      <div mat-line>{{ bill.doctor }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>local_hospital</mat-icon>
+      <div mat-line>Service</div>
+      <div mat-line>{{ bill.serviceName }}: {{ bill.serviceDescription }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>local_hospital</mat-icon>
+      <div mat-line>Hospital</div>
+      <div mat-line>{{ bill.hospital.name }}, {{ bill.hospital.branch }}, {{ bill.hospital.department }}</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>payment</mat-icon>
+      <div mat-line>Insurance</div>
+      <div mat-line>{{ bill.insurance.name }}</div>
+    </mat-list-item>
+    <ng-container *ngIf="bill.approvalNumber">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>chrome_reader_mode</mat-icon>
+        <div mat-line>Approval number</div>
+        <div mat-line>{{ bill.approvalNumber }}</div>
+      </mat-list-item>
+    </ng-container>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>date_range</mat-icon>
+      <div mat-line>Approval date & time</div>
+      <div mat-line>{{ (bill.approvalDate + ' ' + bill.approvalTime) | date : 'medium' }}</div>
+    </mat-list-item>
+    <ng-container *ngIf="bill.additionalInfo">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>info</mat-icon>
+        <div mat-line>Additional info</div>
+        <div mat-line>{{ bill.additionalInfo }}</div>
+      </mat-list-item>
+    </ng-container>
+    <ng-container *ngIf="bill.cost">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>money</mat-icon>
+        <div mat-line>Cost</div>
+        <div mat-line>{{ bill.cost }}</div>
+      </mat-list-item>
+    </ng-container>
+    <ng-container *ngIf="bill.paidByPatient">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>money</mat-icon>
+        <div mat-line>Paid by patient</div>
+        <div mat-line>{{ bill.paidByPatient }}</div>
+      </mat-list-item>
+    </ng-container>
+    <ng-container *ngIf="bill.remainToPay">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>money</mat-icon>
+        <div mat-line>Remain to pay by insurance</div>
+        <div mat-line>{{ bill.remainToPay }}</div>
+      </mat-list-item>
+    </ng-container>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <mat-icon mat-list-icon>date_range</mat-icon>
+      <div mat-line>Created at</div>
+      <div mat-line>{{ bill.createdAt | date : 'medium' }}</div>
+    </mat-list-item>
+    <ng-container *ngIf="lastUpdate">
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-icon mat-list-icon>date_range</mat-icon>
+        <div mat-line>Last update</div>
+        <div mat-line>{{ lastUpdate }}</div>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+</div>
+<div mat-dialog-content *ngIf="!bill" style="display: flex; align-items: center; justify-content: center; height: 500px">
+  <mat-progress-spinner [color]="'accent'" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div mat-dialog-actions *ngIf="bill">
+  <div class="bill-status">{{ billStatus }}</div>
+  <div class="bill-actions" *ngIf="('change_bill_status' | checkPermission) && canChangeBillStatus[bill.status]"
+       [matTooltip]="'Bill blocked. Status don\'t approved yet'" [matTooltipPosition]="'above'" [matTooltipDisabled]="!bill.blocked">
+    <ng-container *ngFor="let status of billStatuses | keyvalue">
+      <ng-container *ngIf="canChangeBillStatus[bill.status].includes(+status.key)">
+        <button mat-flat-button color="accent" (click)="changeStatus(+status.key)" [disabled]="processing || bill.blocked">
+          {{ status.value.button }}
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

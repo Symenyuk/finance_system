@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Select branch</h1>
+<div mat-dialog-content>
+  <form [formGroup]="branchForm">
+    <mat-form-field>
+      <mat-label>Branch</mat-label>
+      <mat-select [formControlName]="'branch'">
+        <mat-option *ngFor="let branch of options" [value]="branch.value">
+          {{ branch.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.branch.errors">
+        <ng-container *ngIf="form.branch.errors['required']">
+          This field is required
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="null">Cancel</button>
+  <button mat-flat-button color="accent" [mat-dialog-close]="form.branch.value" [disabled]="branchForm.invalid">Select</button>
+</div>

@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Bill Message</h1>
+<div mat-dialog-content>
+  <form [formGroup]="messageForm">
+    <mat-form-field>
+      <mat-label>Message</mat-label>
+      <textarea matInput [formControlName]="'message'" placeholder="Enter message"></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-flat-button color="accent" [mat-dialog-close]="messageForm.value.message" [disabled]="!messageForm.value.message.length">Send</button>
+</div>

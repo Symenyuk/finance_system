@@ -1,0 +1,46 @@
+<mat-drawer-container [autosize]="true">
+  <mat-drawer #drawer mode="side" [opened]="true">
+    <header>
+      <span [style.max-width]="'200px'">
+        <img src="../../assets/logo.png" [style.max-width]="'100%'">
+      </span>
+      <!--<h3>Claim Chain Admin</h3>-->
+    </header>
+    <mat-list>
+      <ng-container *ngFor="let link of navLinks">
+        <mat-list-item *ngIf="link.action ? (link.action | checkPermission) : true">
+          <button mat-flat-button [routerLink]="link.path" routerLinkActive="active">
+            <mat-icon>{{ link.icon }}</mat-icon>
+            <span>{{ link.label }}</span>
+          </button>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <header>
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h3>{{ greeting }}</h3>
+      <div class="main-settings">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="changeCredentials()">
+            <mat-icon>settings_input_component</mat-icon>
+            <span>Change credentials</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon color="accent">exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </header>
+    <section>
+      <router-outlet *ngIf="appLoaded"></router-outlet>
+    </section>
+  </mat-drawer-content>
+</mat-drawer-container>

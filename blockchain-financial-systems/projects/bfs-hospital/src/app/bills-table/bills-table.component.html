@@ -1,0 +1,167 @@
+<table mat-table [dataSource]="bills" class="transparent-table">
+
+  <ng-container matColumnDef="title">
+    <th [attr.colspan]="columns.length" mat-header-cell *matHeaderCellDef class="title">
+      {{ title }}
+    </th>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['title']" [hidden]="!title"></tr>
+
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && selection.selected.length === bills.length"
+                    [indeterminate]="selection.hasValue() && selection.selected.length !== bills.length"
+                    [disabled]="!bills.length"
+                    [aria-label]="checkboxLabel()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? checkboxToggle(row) : null"
+                    [checked]="selection.isSelected(row)"
+                    [disabled]="row.blocked"
+                    [aria-label]="checkboxLabel(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="status">
+      <div [matTooltip]="element.statusValue" [matTooltipPosition]="'above'" [style.background]="element.statusColor"></div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="key">
+    <th mat-header-cell *matHeaderCellDef>Bill key</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.key }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="created">
+    <th mat-header-cell *matHeaderCellDef>Created</th>
+    <td mat-cell *matCellDef="let element">
+      <span class="date" [matTooltip]="element.createdAt | date : 'hh:mm:ss'" [matTooltipPosition]="'above'">{{ element.createdAt | date }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="teller">
+    <th mat-header-cell *matHeaderCellDef>Teller</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.teller }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="insurance">
+    <th mat-header-cell *matHeaderCellDef>Insurance</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.insurance.name }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="patient">
+    <th mat-header-cell *matHeaderCellDef>Patient name</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.patientName }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="mobile">
+    <th mat-header-cell *matHeaderCellDef>Patient mobile</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.patientMobile }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="approval">
+    <th mat-header-cell *matHeaderCellDef>Approval number</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.approvalNumber }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="policy">
+    <th mat-header-cell *matHeaderCellDef>Policy type</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.policyType }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="service">
+    <th mat-header-cell *matHeaderCellDef>Service</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.serviceName }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="insuranceApproval">
+    <th mat-header-cell *matHeaderCellDef>Insurance approval</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.insuranceApproval }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discount">
+    <th mat-header-cell *matHeaderCellDef>Discount</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.discount }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="cost">
+    <th mat-header-cell *matHeaderCellDef>Cost</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.cost }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="paid">
+    <th mat-header-cell *matHeaderCellDef>Paid by patient</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.paidByPatient }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="remain">
+    <th mat-header-cell *matHeaderCellDef>Remain to pay by insurance</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.remainToPay }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="history">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="icon-cell">
+      <button mat-icon-button [matTooltip]="'Bill history'" [matTooltipPosition]="'above'" (click)="showHistory(element.key)">
+        <mat-icon>history</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="info">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let element" class="icon-cell">
+      <button mat-icon-button [matTooltip]="'Bill details'" [matTooltipPosition]="'above'" (click)="showDetails(element.id)">
+        <mat-icon>info</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let row; columns: columns" [class.blocked]="row.blocked"
+      [matTooltip]="'Bill blocked. Status don\'t approved yet'" [matTooltipPosition]="'above'" [matTooltipDisabled]="!row.blocked">
+  </tr>
+
+  <ng-container matColumnDef="noRecord">
+    <td [attr.colspan]="columns.length" mat-footer-cell *matFooterCellDef>
+      <mat-progress-spinner [color]="'accent'" mode="indeterminate" *ngIf="!loaded"></mat-progress-spinner>
+      <span *ngIf="loaded">No records found</span>
+    </td>
+  </ng-container>
+
+  <tr mat-footer-row *matFooterRowDef="['noRecord']" [hidden]="total > 0"></tr>
+
+</table>

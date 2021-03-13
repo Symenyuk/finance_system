@@ -1,0 +1,48 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+/build*
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+Temp*
+RationalValues*
+compiler.xml
+encodings.xml
+misc.xml
+uiDesigner.xml
+vcs.xml
+workspace.xml
+.vscode
+
+# Database
+*.db
+db-journal
+*.txt
+
+# logs
+*.log
+bills_reports
+invoices_reports
+gateway
+identity
+/nextblock.txt
+*.yaml
+/logs/info.server.log
+/logs/error.server.log
